@@ -11,29 +11,42 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+一些简单widget，方便少写代码
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+封装了一些简单widget
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+import 'packages:echo_utils/echo_utils.dart'
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
 ```dart
-const like = 'sample';
+import 'package:echo_utils/echo_utils.dart';
+import 'package:flutter/cupertino.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return EchoButton(buttonName: "buttonName", onPressed: (){});
+  }
+}
+
 ```
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+欢迎大家使用提出建议
