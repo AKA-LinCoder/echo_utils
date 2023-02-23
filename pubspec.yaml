@@ -1,6 +1,6 @@
 name: echo_utils
 description: 一些小工具,some small tools
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/AKA-LinCoder/echo_utils
 
 environment:
