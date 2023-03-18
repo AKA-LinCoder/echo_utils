@@ -4,3 +4,12 @@
 ## 0.0.2
 
 * TODO: 新增底部弹出sheet add bottom sheet
+## 0.0.3
+
+* TODO: 新增log self log
+## 0.0.4
+
+* TODO: 自定义toast
+## 0.0.5
+
+* TODO: 自由拖拽缩放的widget

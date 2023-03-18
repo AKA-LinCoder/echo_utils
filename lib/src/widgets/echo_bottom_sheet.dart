@@ -6,19 +6,6 @@
 /// @Description TODO 底部弹出选择列表
 import 'package:flutter/material.dart';
 
-// class EchoBottomSheet extends StatefulWidget {
-//   const EchoBottomSheet({Key? key}) : super(key: key);
-//
-//   @override
-//   State<EchoBottomSheet> createState() => _EchoBottomSheetState();
-// }
-//
-// class _EchoBottomSheetState extends State<EchoBottomSheet> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Placeholder();
-//   }
-// }
 
 void echoBottomSheet(BuildContext context, List<BottomSheetModel> items) {
   showModalBottomSheet(
@@ -31,7 +18,7 @@ void echoBottomSheet(BuildContext context, List<BottomSheetModel> items) {
               return GestureDetector(
                 onTap: ()async{
                   Navigator.of(context).pop();
-                  item.onPressed();
+                  item.onPressed(context);
                 },
                 behavior: HitTestBehavior.opaque,
                 child: Container(
@@ -71,7 +58,7 @@ class BottomSheetModel {
   final String title;
 
   ///点击事件
-  final Function() onPressed;
+  final Function(BuildContext context) onPressed;
 
   ///文字样式
   final TextStyle? textStyle;
