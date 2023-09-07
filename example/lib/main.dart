@@ -1,5 +1,6 @@
 import 'package:echo_utils/echo_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -44,16 +45,27 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('LoginPage')),
+      appBar: AppBar(title: const Text('LoginPage')),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => const MyHomePage(
-                        title: '',
-                      ))),
-          child: Text('Page2'),
+        child: Column(
+          children: [
+             EchoRatingStar(
+               initSelectStarNum: 3,
+               selectCallback: (selected){
+              if (kDebugMode) {
+                print("选择了$selected");
+              }
+            },),
+            ElevatedButton(
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const MyHomePage(
+                            title: '',
+                          ))),
+              child: const Text('Page2'),
+            ),
+          ],
         ),
       ),
     );

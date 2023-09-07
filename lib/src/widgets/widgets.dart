@@ -10,3 +10,4 @@ export 'echo_bottom_sheet.dart';
 export 'echo_drag_container.dart';
 export 'echo_popup_menu.dart';
 export 'echo_login_input.dart';
+export 'echo_star/echo_rating_star.dart';
