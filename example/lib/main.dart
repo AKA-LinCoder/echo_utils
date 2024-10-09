@@ -2,6 +2,7 @@ import 'package:echo_utils/echo_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,7 +42,66 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _showBottomSheet();
+    });
+  }
+
+
+  void _showBottomSheet (){
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      // useSafeArea: true,
+      context: context,
+      builder: (BuildContext sheetContext) {
+        return Container(
+
+          padding: const EdgeInsets.all(16.0),
+          margin: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12)
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('权限申请'),
+              SizedBox(height: 16.0),
+              Text('App需要相机权限以正常使用，请点击同意按钮以授予权限。'),
+              SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(sheetContext).pop(); // 关闭底部表单
+                  Permission.camera.request().then((status) {
+                    if (status.isGranted) {
+                      _performLogin();
+                    } else {
+                      // 用户拒绝了权限，可以在这里处理相应的操作，如退出应用或显示提示信息
+                      print('用户拒绝了相机权限');
+                    }
+                  });
+                },
+                child: Text('同意'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +109,14 @@ class LoginPage extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
+            GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: (){
+
+                  // _showPermissionBottomSheet(context);
+                  // _showPermissionDialog(context);
+                },
+                child: Text("权限申请")),
              EchoRatingStar(
                initSelectStarNum: 3,
                selectCallback: (selected){
@@ -69,6 +137,93 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _performLogin() {
+    // 在这里执行登录操作
+    print('用户已登录');
+  }
+
+  void _showPermissionBottomSheet(BuildContext context) {
+    Permission.camera.request().then((status) {
+      if (status.isGranted) {
+        // 用户已经同意权限，可以进行正常操作
+        _performLogin();
+      } else {
+        // 弹出权限申请底部表单
+        showBottomSheet(
+          context: context,
+          builder: (BuildContext sheetContext) {
+            return Container(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('权限申请'),
+                  SizedBox(height: 16.0),
+                  Text('App需要相机权限以正常使用，请点击同意按钮以授予权限。'),
+                  SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(sheetContext).pop(); // 关闭底部表单
+                      Permission.camera.request().then((status) {
+                        if (status.isGranted) {
+                          _performLogin();
+                        } else {
+                          // 用户拒绝了权限，可以在这里处理相应的操作，如退出应用或显示提示信息
+                          print('用户拒绝了相机权限');
+                        }
+                      });
+                    },
+                    child: Text('同意'),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      }
+    });
+  }
+
+  Future<void> _showPermissionDialog(BuildContext context) async {
+    var status = await Permission.camera.status;
+    if (status.isGranted) {
+      // 用户已经同意权限，可以进行正常操作
+      _performLogin();
+    } else {
+      if(!context.mounted){
+        return;
+      }
+      // 弹出权限申请框
+      showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) => AlertDialog(
+          title: const Text('权限申请'),
+          content: const Text('App需要相机权限以正常使用，请点击同意按钮以授予权限。'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                if(!dialogContext.mounted){
+                  return;
+                }
+                Navigator.of(dialogContext).pop();  // 使用 dialogContext
+                status = await Permission.camera.request();
+                if (status.isGranted) {
+                  _performLogin();
+                } else {
+                  // 用户拒绝了权限，可以在这里处理相应的操作，如退出应用或显示提示信息
+                  if (kDebugMode) {
+                    print('用户拒绝了相机权限');
+                  }
+                }
+              },
+              child: const Text('同意'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }
 

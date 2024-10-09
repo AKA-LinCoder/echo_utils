@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 /// FileName common
@@ -35,3 +37,27 @@ MaterialColor createMaterialColor(Color color) {
   }
   return MaterialColor(color.value, swatch);
 }
+
+
+///随机颜色
+Color randomColor() {
+  Random random = Random();
+  int red = random.nextInt(256); // 0-255之间的随机红色值
+  int green = random.nextInt(256); // 0-255之间的随机绿色值
+  int blue = random.nextInt(256); // 0-255之间的随机蓝色值
+  return Color.fromARGB(255, red, green, blue); // 创建Color对象
+}
+
+///@title closeKeyBoard
+///@description TODO
+///@param: context
+///@updateTime 2023/11/28 17:21
+///@author LinGuanYu
+ closeKeyBoard(BuildContext context){
+
+   FocusScopeNode currentFocus = FocusScope.of(context);
+   if (!currentFocus.hasPrimaryFocus &&
+       currentFocus.focusedChild != null) {
+     FocusManager.instance.primaryFocus?.unfocus();
+   }
+ }
